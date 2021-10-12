@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+    constructor() {
+        super()
+        this.state = {
+            color: ""
+        }
+        this.handleClick = this.handleClick.bind(this)
+    }
+    handleClick(event){
+        event.preventDefault()
+        fetch("https://www.colr.org/json/color/random?timestamp=${new Date().getTime()}")
+        .then(response => response.json())
+        .then(data => {
+            const newColor = "#"+data.colors[0].hex
+            
+            this.setState({color:newColor})
+            console.log(this.state.color);
+        })
+    }
+    
+
+    render(){
+        
+        return(
+            <div>
+                <div style={{backgroundColor:this.state.color}}  className="coloredDiv"></div>
+                <button onClick={this.handleClick}>CHANGE COLORS</button>
+            </div>
+        )
+    }
+
 }
 
-export default App;
+export default App
